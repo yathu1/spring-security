@@ -37,4 +37,12 @@ public class UserController {
         return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
     }
 
+    @PutMapping("/{id}")
+    public UserEntity updateUserById(@PathVariable Long id, @RequestBody UserEntity user) {
+        UserEntity existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+        existingUser.setName(user.getName());
+        existingUser.setEmail(user.getEmail());
+        return userRepository.save(existingUser);
+    }
 }
