@@ -20,9 +20,10 @@ public class SecuritiyConfig {
         http.authorizeHttpRequests(authz->
                 authz.requestMatchers("/api/users/**").authenticated()
                         .requestMatchers("/").permitAll()
+                        .anyRequest().authenticated()
         )
         .formLogin(form ->
-                form.permitAll()
+                form.permitAll().defaultSuccessUrl("/dashboard")
         );
         return http.build();
     }
@@ -32,12 +33,12 @@ public class SecuritiyConfig {
         // This method can be used to configure a custom UserDetailsService if needed
         // For now, we are using the default in-memory user details service provided by Spring Security
         UserDetails user= User.withUsername("yathu")
-                .password(passwordEncoder.encode("12456")) // {noop} indicates that no password encoder is used
+                .password(passwordEncoder.encode("123456")) // {noop} indicates that no password encoder is used
                 .roles("USER")
                 .build();
 
         UserDetails admin= User.withUsername("admin")
-                .password(passwordEncoder.encode("12456")) // {noop} indicates that no password encoder is used
+                .password(passwordEncoder.encode("123456")) // {noop} indicates that no password encoder is used
                 .roles("ADMIN")
                 .build();
         return new InMemoryUserDetailsManager(user, admin);
