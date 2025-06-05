@@ -7,6 +7,7 @@ import com.yathu.spring_boot_security.models.User;
 import com.yathu.spring_boot_security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -20,6 +21,9 @@ public class UserController {
          @Autowired
         private UserRepository userRepository;
 
+         @Autowired
+        private PasswordEncoder passwordEncoder;
+
     @GetMapping
     public List<UserEntity> getUsers() {
 //        return Arrays.asList(new User(1L, "john_doe", "john@gmail.com"),
@@ -30,6 +34,12 @@ public class UserController {
 
     @PostMapping
     public UserEntity createUser(@RequestBody UserEntity user) {
+        // Encrypt the password before saving
+        if (user.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        } else {
+            throw new IllegalArgumentException("Password must not be null");
+        }
         return userRepository.save(user);
     }
 
