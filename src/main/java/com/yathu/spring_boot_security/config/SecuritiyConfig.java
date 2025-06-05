@@ -2,6 +2,7 @@ package com.yathu.spring_boot_security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -18,13 +19,14 @@ public class SecuritiyConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authz->
-                authz.requestMatchers("/api/users/**").authenticated()
+                authz .requestMatchers(HttpMethod.POST,"/api/users").permitAll()
+                        .requestMatchers("/api/users/**").authenticated()
                         .requestMatchers("/").permitAll()
                         .anyRequest().authenticated()
         )
         .formLogin(form ->
-                form.permitAll().defaultSuccessUrl("/dashboard")
-        );
+                form.permitAll().defaultSuccessUrl("/dashboard"))
+                .csrf(csrf->csrf.disable());
         return http.build();
     }
 
