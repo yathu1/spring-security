@@ -23,10 +23,12 @@ public class UserEntity {
     public UserEntity() {
     }
 
-    public UserEntity(Long id, String name, String email) {
+    public UserEntity(Long id, String name, String email,String username, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.username = username;
+        this.password = password;
     }
 
     private String name;
@@ -48,4 +50,23 @@ public class UserEntity {
     }
 
     private String email;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    private String username;
+    private String password;
 }
